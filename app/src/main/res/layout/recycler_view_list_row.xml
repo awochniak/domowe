@@ -15,16 +15,14 @@
         android:layout_marginLeft="10dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:inputType="textMultiLine"
         android:lines="3"
         android:maxLines="4"
         android:singleLine="false"
         android:text="tytuł zasobu"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewDel"
         app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.51" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -39,7 +37,7 @@
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imageViewDel"
         android:layout_width="40dp"
         android:layout_height="48dp"
         android:layout_marginStart="8dp"
@@ -50,5 +48,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/star_big_off" />
+
 
 </android.support.constraint.ConstraintLayout>

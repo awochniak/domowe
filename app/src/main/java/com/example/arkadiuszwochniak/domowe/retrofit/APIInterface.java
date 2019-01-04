@@ -3,7 +3,6 @@ package com.example.arkadiuszwochniak.domowe.retrofit;
 
 
 import com.example.arkadiuszwochniak.domowe.objects.Photos;
-import com.example.arkadiuszwochniak.domowe.objects.PhotosDetails;
 
 import java.util.List;
 
@@ -18,6 +17,6 @@ public interface APIInterface {
     @GET("photos")
     Call<List<Photos>>  getPeople(@Query("format") String format);
 
-    @GET
-    Call<List<PhotosDetails>> getFilmData(@Url String url, @Query("format") String format);
+    @GET("photos")
+    Call<Photos> getFilmData(@Url String url, @Query("format") String format);
 }

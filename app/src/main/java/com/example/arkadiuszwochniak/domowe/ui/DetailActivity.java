@@ -13,7 +13,6 @@ import com.example.arkadiuszwochniak.domowe.di.component.DaggerDetailActivityCom
 import com.example.arkadiuszwochniak.domowe.di.component.DetailActivityComponent;
 import com.example.arkadiuszwochniak.domowe.di.qualifier.ApplicationContext;
 import com.example.arkadiuszwochniak.domowe.objects.Photos;
-import com.example.arkadiuszwochniak.domowe.objects.PhotosDetails;
 import com.example.arkadiuszwochniak.domowe.retrofit.APIInterface;
 
 import java.util.List;
@@ -53,23 +52,18 @@ public class DetailActivity extends AppCompatActivity {
 
         detailActivityComponent.inject(this);
 
-        apiInterface.getFilmData(url, "json").enqueue(new Callback<List<PhotosDetails>>() {
+        apiInterface.getFilmData(url, "json").enqueue(new Callback<Photos>() {
             @Override
-            public void onResponse(Call<List<PhotosDetails>> call, Response<List<PhotosDetails>> response) {
+            public void onResponse(Call<Photos> call, Response<Photos> response) {
 
-                List<PhotosDetails> photographs = response.body();
-                String[] titles = new String [photographs.size()];
+                Photos photosDetails = response.body();
 
-                for  (int i = 0; i<photographs.size();i++) {
+                String text = "Film name:\n" + photosDetails.title + "\nDirector:\n" + photosDetails.thumbnailUrl;
 
-                    titles[i] = photographs.get(i).getTitleDetail();
-                    textView.setText(titles[i]);
-
-                }
             }
 
             @Override
-            public void onFailure(Call<List<PhotosDetails>> call, Throwable t) {
+            public void onFailure(Call<Photos> call, Throwable t) {
 
             }
         });
