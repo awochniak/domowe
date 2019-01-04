@@ -52,13 +52,13 @@ public class DetailActivity extends AppCompatActivity {
 
         detailActivityComponent.inject(this);
 
-        apiInterface.getFilmData(url, "json").enqueue(new Callback<Photos>() {
+        apiInterface.getFilmData("json").enqueue(new Callback<Photos>() {
             @Override
             public void onResponse(Call<Photos> call, Response<Photos> response) {
 
-                Photos photosDetails = response.body();
+          //      Photos photosDetails = response.body();
 
-                String text = "Film name:\n" + photosDetails.title + "\nDirector:\n" + photosDetails.thumbnailUrl;
+           //     String text = "Film name:\n" + photosDetails.title + "\nDirector:\n" + photosDetails.thumbnailUrl;
 
             }
 

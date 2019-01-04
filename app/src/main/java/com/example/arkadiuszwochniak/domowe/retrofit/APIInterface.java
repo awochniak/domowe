@@ -18,5 +18,5 @@ public interface APIInterface {
     Call<List<Photos>>  getPeople(@Query("format") String format);
 
     @GET("photos")
-    Call<Photos> getFilmData(@Url String url, @Query("format") String format);
+    Call<Photos> getFilmData(@Query("format") String format);
 }
