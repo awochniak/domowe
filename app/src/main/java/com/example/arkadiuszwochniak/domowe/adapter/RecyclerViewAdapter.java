@@ -1,15 +1,26 @@
 package com.example.arkadiuszwochniak.domowe.adapter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.arkadiuszwochniak.domowe.R;
 import com.example.arkadiuszwochniak.domowe.objects.Photos;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +44,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
         holder.txtName.setText(data.get(position).title);
-        holder.txtBirthYear.setText(data.get(position).thumbnailUrl);
-    }
+        Picasso.get().load(data.get(position).thumbnailUrl).into(holder.imgView);
+        
+        //new DownloadImageTask(holder.imgView).execute(data.get(position).thumbnailUrl);
+
+        }
 
     @Override
     public int getItemCount() {
@@ -46,14 +61,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView txtName;
-        private TextView txtBirthYear;
+        private ImageView imgView;
         private ConstraintLayout constraintLayoutContainer;
 
         ViewHolder(View itemView) {
             super(itemView);
 
             txtName = itemView.findViewById(R.id.txtName);
-            txtBirthYear = itemView.findViewById(R.id.txtBirthYear);
+            imgView = itemView.findViewById(R.id.imageView);
             constraintLayoutContainer = itemView.findViewById(R.id.constraintLayout);
 
             constraintLayoutContainer.setOnClickListener(new View.OnClickListener() {
@@ -74,5 +89,30 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void setData(List<Photos> data) {
         this.data.addAll(data);
         notifyDataSetChanged();
+    }
+
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }
