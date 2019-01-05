@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         mainActivityComponent.injectMainActivity(this);
         recyclerView.setAdapter(recyclerViewAdapter);
 
+
         apiInterface.getPeople("json").enqueue(new Callback<List<Photos>>() {
             @Override
 
@@ -89,7 +90,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     @Override
     public void launchIntent(String url) {
-        Toast.makeText(mContext, "RecyclerView Row selected", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "RecyclerView Raaow selected", Toast.LENGTH_SHORT).show();
+
         startActivity(new Intent(activityContext, DetailActivity.class).putExtra("url", url));
     }
 }

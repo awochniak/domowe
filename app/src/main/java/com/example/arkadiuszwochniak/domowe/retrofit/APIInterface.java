@@ -15,7 +15,7 @@ public interface APIInterface {
 
 
     @GET("photos")
-    Call<List<Photos>>  getPeople(@Query("format") String format);
+    Call<List<Photos>> getPeople(@Query("format") String format);
 
     @GET("photos")
     Call<Photos> getFilmData(@Query("format") String format);

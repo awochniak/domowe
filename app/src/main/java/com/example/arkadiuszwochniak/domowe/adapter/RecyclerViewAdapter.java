@@ -1,6 +1,5 @@
 package com.example.arkadiuszwochniak.domowe.adapter;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import com.example.arkadiuszwochniak.domowe.R;
 import com.example.arkadiuszwochniak.domowe.objects.Photos;
-import com.example.arkadiuszwochniak.domowe.ui.DetailActivity;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -49,6 +47,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         holder.txtName.setText(data.get(position).title);
         Picasso.get().load(data.get(position).thumbnailUrl).into(holder.imgView);
+        
+        //new DownloadImageTask(holder.imgView).execute(data.get(position).thumbnailUrl);
 
         }
 
@@ -76,6 +76,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 public void onClick(View v) {
 
                     clickListener.launchIntent(data.get(getAdapterPosition()).title);
+
                 }
             });
         }
@@ -90,4 +91,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         notifyDataSetChanged();
     }
 
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
 }

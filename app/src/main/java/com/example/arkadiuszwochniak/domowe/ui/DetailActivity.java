@@ -3,6 +3,7 @@ package com.example.arkadiuszwochniak.domowe.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -14,6 +15,7 @@ import com.example.arkadiuszwochniak.domowe.di.component.DetailActivityComponent
 import com.example.arkadiuszwochniak.domowe.di.qualifier.ApplicationContext;
 import com.example.arkadiuszwochniak.domowe.objects.Photos;
 import com.example.arkadiuszwochniak.domowe.retrofit.APIInterface;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -35,6 +37,7 @@ public class DetailActivity extends AppCompatActivity {
     public Context mContext;
 
     TextView textView;
+    ImageView imgView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,8 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         textView = findViewById(R.id.textView);
+        imgView = findViewById(R.id.imageView2);
+
 
         String url = getIntent().getStringExtra("url");
 
@@ -52,18 +57,29 @@ public class DetailActivity extends AppCompatActivity {
 
         detailActivityComponent.inject(this);
 
-        apiInterface.getFilmData("json").enqueue(new Callback<Photos>() {
+        apiInterface.getPeople("json").enqueue(new Callback<List<Photos>>() {
             @Override
-            public void onResponse(Call<Photos> call, Response<Photos> response) {
+            public void onResponse(Call<List<Photos>> call, Response<List<Photos>> response) {
 
-          //      Photos photosDetails = response.body();
+                List<Photos> photosDetails = response.body();
 
-           //     String text = "Film name:\n" + photosDetails.title + "\nDirector:\n" + photosDetails.thumbnailUrl;
+                String[] titles = new String [photosDetails.size()];
+                String[] url = new String [photosDetails.size()];
+
+                for  (int i = 0; i<photosDetails.size();i++) {
+
+                    titles[i] = photosDetails.get(i).getTitle();
+                    url[i] = photosDetails.get(i).getUrl();
+
+                }
+
+                textView.setText(titles[0]);
+                Picasso.get().load(url[3]).into(imgView);
 
             }
 
             @Override
-            public void onFailure(Call<Photos> call, Throwable t) {
+            public void onFailure(Call<List<Photos>> call, Throwable t) {
 
             }
         });
