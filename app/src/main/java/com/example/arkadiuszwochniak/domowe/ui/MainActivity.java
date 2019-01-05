@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     private RecyclerView recyclerView;
     private Button btn;
+
     MainActivityComponent mainActivityComponent;
 
     @Inject

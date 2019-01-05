@@ -39,8 +39,9 @@ public class DetailActivity extends AppCompatActivity {
     public Context mContext;
 
     TextView textView;
-    ImageView imgView, addFavourite;
+    ImageView imgView;
     Button buttonReturn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,6 @@ public class DetailActivity extends AppCompatActivity {
         textView = findViewById(R.id.textView);
         imgView = findViewById(R.id.imageView2);
         buttonReturn = findViewById(R.id.buttonReturn);
-        addFavourite = findViewById(R.id.imageViewFav);
 
         final String title = getIntent().getStringExtra("title");
         final String url = getIntent().getStringExtra("url");
@@ -68,8 +68,6 @@ public class DetailActivity extends AppCompatActivity {
 
                 textView.setText(title);
                 Picasso.get().load(url).into(imgView);
-
-
             }
 
             @Override
@@ -78,11 +76,14 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-       buttonReturn.setOnClickListener(new View.OnClickListener() {
+        buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 finish();
             }
         });
+
+
     }
 }
