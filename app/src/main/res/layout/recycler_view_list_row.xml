@@ -20,7 +20,7 @@
         android:singleLine="false"
         android:text="tytuł zasobu"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageViewDel"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewFav"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,7 +37,7 @@
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <ImageView
-        android:id="@+id/imageViewDel"
+        android:id="@+id/imageViewFav"
         android:layout_width="40dp"
         android:layout_height="48dp"
         android:layout_marginStart="8dp"

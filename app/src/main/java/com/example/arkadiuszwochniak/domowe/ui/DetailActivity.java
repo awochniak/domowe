@@ -3,6 +3,8 @@ package com.example.arkadiuszwochniak.domowe.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,7 +39,8 @@ public class DetailActivity extends AppCompatActivity {
     public Context mContext;
 
     TextView textView;
-    ImageView imgView;
+    ImageView imgView, addFavourite;
+    Button buttonReturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +49,11 @@ public class DetailActivity extends AppCompatActivity {
 
         textView = findViewById(R.id.textView);
         imgView = findViewById(R.id.imageView2);
+        buttonReturn = findViewById(R.id.buttonReturn);
+        addFavourite = findViewById(R.id.imageViewFav);
 
-
-        String url = getIntent().getStringExtra("url");
+        final String title = getIntent().getStringExtra("title");
+        final String url = getIntent().getStringExtra("url");
 
         ApplicationComponent applicationComponent = MyApplication.get(this).getApplicationComponent();
         detailActivityComponent = DaggerDetailActivityComponent.builder()
@@ -61,26 +66,22 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Photos>> call, Response<List<Photos>> response) {
 
-                List<Photos> photosDetails = response.body();
+                textView.setText(title);
+                Picasso.get().load(url).into(imgView);
 
-                String[] titles = new String [photosDetails.size()];
-                String[] url = new String [photosDetails.size()];
-
-                for  (int i = 0; i<photosDetails.size();i++) {
-
-                    titles[i] = photosDetails.get(i).getTitle();
-                    url[i] = photosDetails.get(i).getUrl();
-
-                }
-
-                textView.setText(titles[0]);
-                Picasso.get().load(url[3]).into(imgView);
 
             }
 
             @Override
             public void onFailure(Call<List<Photos>> call, Throwable t) {
 
+            }
+        });
+
+       buttonReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

@@ -45,6 +45,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
+
         holder.txtName.setText(data.get(position).title);
         Picasso.get().load(data.get(position).thumbnailUrl).into(holder.imgView);
         
@@ -56,6 +57,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public int getItemCount() {
 
         return data.size();
+    }
+
+    public Object getItem(int position){
+        return (data.get(position));
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -75,7 +80,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 @Override
                 public void onClick(View v) {
 
-                    clickListener.launchIntent(data.get(getAdapterPosition()).title);
+                    clickListener.launchIntent(
+                            data.get(getAdapterPosition()).title,
+                            data.get(getAdapterPosition()).url);
 
                 }
             });
@@ -83,36 +90,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public interface ClickListener {
-        void launchIntent(String filmName);
+        void launchIntent(String title, String url);
     }
 
     public void setData(List<Photos> data) {
         this.data.addAll(data);
         notifyDataSetChanged();
-    }
-
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
     }
 }

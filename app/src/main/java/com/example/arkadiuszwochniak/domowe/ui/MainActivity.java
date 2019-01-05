@@ -81,6 +81,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
             }
         });
+
+        btn = findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),FavouriteActivity.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
     private void populateRecyclerView(List<Photos> response) {
@@ -89,9 +99,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
 
     @Override
-    public void launchIntent(String url) {
-        Toast.makeText(mContext, "RecyclerView Raaow selected", Toast.LENGTH_SHORT).show();
+    public void launchIntent(String title, String url) {
 
-        startActivity(new Intent(activityContext, DetailActivity.class).putExtra("url", url));
+        startActivity(new Intent(activityContext, DetailActivity.class).
+                putExtra("title", title).
+                putExtra("url", url));
     }
+
+
 }
