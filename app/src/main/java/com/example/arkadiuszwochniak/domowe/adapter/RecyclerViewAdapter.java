@@ -1,6 +1,7 @@
 package com.example.arkadiuszwochniak.domowe.adapter;
 
 
+import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,8 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.arkadiuszwochniak.domowe.R;
+import com.example.arkadiuszwochniak.domowe.di.module.DatabaseHelper;
+import com.example.arkadiuszwochniak.domowe.di.qualifier.ActivityContext;
+import com.example.arkadiuszwochniak.domowe.di.qualifier.ApplicationContext;
 import com.example.arkadiuszwochniak.domowe.objects.Photos;
 import com.squareup.picasso.Picasso;
 
@@ -24,6 +29,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<Photos> data;
     private RecyclerViewAdapter.ClickListener clickListener;
     private Boolean flag = true;
+
+
+    @Inject
+    @ApplicationContext
+    public Context mContext;
+
+    @Inject
+    @ActivityContext
+    public Context activityContext;
 
     @Inject
     public RecyclerViewAdapter(ClickListener clickListener) {
@@ -48,8 +62,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.imgViewFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (flag == true) {
                     holder.imgViewFav.setImageResource(android.R.drawable.btn_star_big_off);
+
+
                     flag = false;
                 } else {
                     holder.imgViewFav.setImageResource(android.R.drawable.btn_star_big_on);

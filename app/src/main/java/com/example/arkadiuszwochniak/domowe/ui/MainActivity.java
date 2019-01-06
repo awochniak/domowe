@@ -17,6 +17,7 @@ import com.example.arkadiuszwochniak.domowe.adapter.RecyclerViewAdapter;
 import com.example.arkadiuszwochniak.domowe.di.component.ApplicationComponent;
 import com.example.arkadiuszwochniak.domowe.di.component.DaggerMainActivityComponent;
 import com.example.arkadiuszwochniak.domowe.di.component.MainActivityComponent;
+import com.example.arkadiuszwochniak.domowe.di.module.DatabaseHelper;
 import com.example.arkadiuszwochniak.domowe.di.module.MainActivityContextModule;
 import com.example.arkadiuszwochniak.domowe.di.qualifier.ActivityContext;
 import com.example.arkadiuszwochniak.domowe.di.qualifier.ApplicationContext;

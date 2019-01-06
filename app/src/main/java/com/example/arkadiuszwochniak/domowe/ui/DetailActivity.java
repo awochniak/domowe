@@ -1,12 +1,15 @@
 package com.example.arkadiuszwochniak.domowe.ui;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.arkadiuszwochniak.domowe.MyApplication;
@@ -14,6 +17,7 @@ import com.example.arkadiuszwochniak.domowe.R;
 import com.example.arkadiuszwochniak.domowe.di.component.ApplicationComponent;
 import com.example.arkadiuszwochniak.domowe.di.component.DaggerDetailActivityComponent;
 import com.example.arkadiuszwochniak.domowe.di.component.DetailActivityComponent;
+import com.example.arkadiuszwochniak.domowe.di.module.DatabaseHelper;
 import com.example.arkadiuszwochniak.domowe.di.qualifier.ApplicationContext;
 import com.example.arkadiuszwochniak.domowe.objects.Photos;
 import com.example.arkadiuszwochniak.domowe.retrofit.APIInterface;
@@ -30,6 +34,7 @@ import retrofit2.Response;
 public class DetailActivity extends AppCompatActivity {
 
     DetailActivityComponent detailActivityComponent;
+    DatabaseHelper myDb;
 
     @Inject
     public APIInterface apiInterface;
@@ -47,6 +52,8 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        myDb = new DatabaseHelper(this);
 
         textView = findViewById(R.id.textView);
         imgView = findViewById(R.id.imageView2);
@@ -76,14 +83,23 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        boolean isInserted =  myDb.insertData(title, url, url);
+
+        if(isInserted=true){
+            Toast.makeText(DetailActivity.this, "Data Inserted", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(DetailActivity.this, "Data not inserted", Toast.LENGTH_LONG).show();
+        }
+
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 finish();
             }
         });
 
 
     }
+    
 }
