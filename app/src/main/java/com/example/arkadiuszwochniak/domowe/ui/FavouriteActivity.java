@@ -44,10 +44,9 @@ public class FavouriteActivity extends AppCompatActivity {
 
         StringBuffer buffer = new StringBuffer();
         while(res.moveToNext()){
-            buffer.append("Id :"+ res.getString(0)+"\n");
             buffer.append("Title :"+ res.getString(1)+"\n");
             buffer.append("Thumbnail url :"+ res.getString(2)+"\n");
-            buffer.append("Url :"+ res.getString(3)+"\n");
+            buffer.append("Url :"+ res.getString(3)+"\n\n");
         }
 
     textView = findViewById(R.id.textView3);

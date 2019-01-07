@@ -58,4 +58,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("select * from "+TABLE_NAME, null);
         return res;
     }
+
+    public Cursor getOneRow(String input){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from "+TABLE_NAME+" where "+COL2+" = '"+input+"'",null);
+        return res;
+    }
+    public Integer deleteOneRow(String input){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_NAME, "title = ?", new String[] {input});
+    }
 }
