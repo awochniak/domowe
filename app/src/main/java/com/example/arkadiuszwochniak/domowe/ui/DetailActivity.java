@@ -83,14 +83,6 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        boolean isInserted =  myDb.insertData(title, url, url);
-
-        if(isInserted=true){
-            Toast.makeText(DetailActivity.this, "Data Inserted", Toast.LENGTH_LONG).show();
-        }
-        else {
-            Toast.makeText(DetailActivity.this, "Data not inserted", Toast.LENGTH_LONG).show();
-        }
 
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,5 +93,5 @@ public class DetailActivity extends AppCompatActivity {
 
 
     }
-    
+
 }
