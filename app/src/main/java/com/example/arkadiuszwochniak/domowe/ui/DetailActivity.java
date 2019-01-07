@@ -61,6 +61,7 @@ public class DetailActivity extends AppCompatActivity {
 
         final String title = getIntent().getStringExtra("title");
         final String url = getIntent().getStringExtra("url");
+        Picasso.get().load(url).fetch();
 
         ApplicationComponent applicationComponent = MyApplication.get(this).getApplicationComponent();
         detailActivityComponent = DaggerDetailActivityComponent.builder()
