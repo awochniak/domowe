@@ -14,6 +14,12 @@ public class Photos {
     @SerializedName("url")
     public String url;
 
+    public Photos(String title, String thumbnailUrl, String url) {
+        this.title = title;
+        this.thumbnailUrl = thumbnailUrl;
+        this.url = url;
+    }
+
     public String getTitle() {
         return title;
     }
