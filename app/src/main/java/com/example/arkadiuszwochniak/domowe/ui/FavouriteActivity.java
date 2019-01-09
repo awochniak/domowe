@@ -40,6 +40,7 @@ import retrofit2.Response;
 
 public class FavouriteActivity extends AppCompatActivity implements RecyclerViewAdapterFav.ClickListener {
 
+    TextView textViewFavInfo;
     Button button,delAll;
     Cursor res;
     DatabaseHelper myDb;
@@ -79,23 +80,31 @@ public class FavouriteActivity extends AppCompatActivity implements RecyclerView
         favouriteActivityComponent.injectFavouriteActivity(this);
         recyclerView.setAdapter(recyclerViewAdapterFav);
 
+        textViewFavInfo = findViewById(R.id.textViewInfoFav);
+
+
         res = myDb.getAllData();
-
-
         photogs = new ArrayList<>();
+
         while(res.moveToNext()){
             Photos photo = new Photos(res.getString(1),res.getString(2),res.getString(3));
             photogs.add(photo);
         }
+
+        if(photogs.size()!=0){
+            textViewFavInfo.setVisibility(View.GONE);
+        }
+
         populateRecyclerView(photogs);
 
-    delAll = findViewById(R.id.buttonDelAll);
+        delAll = findViewById(R.id.buttonDelAll);
 
-    delAll.setOnClickListener(new View.OnClickListener() {
+        delAll.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
         myDb.dropTable();
         recyclerView.setVisibility(View.GONE);
+        textViewFavInfo.setVisibility(View.VISIBLE);
         Toast.makeText(getBaseContext(), "Usunięto wszystkie ulubione cytaty :(", Toast.LENGTH_LONG).show();
         }
 
@@ -106,7 +115,7 @@ public class FavouriteActivity extends AppCompatActivity implements RecyclerView
     button.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            navigateUpTo(new Intent(v.getContext(), MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
     });
     }
@@ -114,6 +123,8 @@ public class FavouriteActivity extends AppCompatActivity implements RecyclerView
     private void populateRecyclerView(List<Photos> response) {
         recyclerViewAdapterFav.setData(photogs);
     }
+
+
     @Override
     public void launchIntent(String title, String thumbnailUrl, String url) {
         startActivity(new Intent(activityContext, DetailActivity.class).

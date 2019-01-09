@@ -5,12 +5,17 @@ import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.View;
+import android.widget.TextView;
+
+import com.example.arkadiuszwochniak.domowe.objects.Photos;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 public class ImageHelper {
     public static String saveToInternalStorage(Bitmap bitmapImage, Context c, String fileName){
@@ -65,5 +70,6 @@ public class ImageHelper {
 
         return path;
     }
+
 }
 

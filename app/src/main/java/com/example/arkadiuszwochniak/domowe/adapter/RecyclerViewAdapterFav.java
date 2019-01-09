@@ -31,9 +31,7 @@ public class RecyclerViewAdapterFav extends RecyclerView.Adapter<RecyclerViewAda
 
     private List<Photos> data;
     private RecyclerViewAdapterFav.ClickListener clickListener;
-    private Boolean flag = true;
     private DatabaseHelper myDb;
-    private static final String IMAGE_RESOURCE = "image-resource";
 
     @Inject
     @ApplicationContext
@@ -66,26 +64,25 @@ public class RecyclerViewAdapterFav extends RecyclerView.Adapter<RecyclerViewAda
         final String url = data.get(position).url;
         final String thumbnailUrl = data.get(position).thumbnailUrl;
 
+
         holder.txtName.setText(title);
         Picasso.get().load(thumbnailUrl).into(holder.imgView);
-
         holder.imgViewFav.setImageResource(android.R.drawable.ic_delete);
-
 
         holder.imgViewFav.setOnClickListener(new View.OnClickListener() {
 
+
             @Override
             public void onClick(final View v) {
-
-                Context context = v.getContext();
-                myDb = new DatabaseHelper(context);
-                myDb.deleteOneRow(title);
-                data.remove(position);
-                notifyDataSetChanged();
-                Toast.makeText(v.getContext(), "Usunięto z ulubionych", Toast.LENGTH_SHORT).show();
-
+                    Context context = v.getContext();
+                    myDb = new DatabaseHelper(context);
+                    myDb.deleteOneRow(title);
+                    data.remove(position);
+                    notifyDataSetChanged();
+                    Toast.makeText(v.getContext(), "Usunięto z ulubionych", Toast.LENGTH_SHORT).show();
             }
         });
+
 
     }
 
@@ -96,10 +93,10 @@ public class RecyclerViewAdapterFav extends RecyclerView.Adapter<RecyclerViewAda
 
     }
 
-
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView txtName;
+        private TextView txtFavInfo;
         private ImageView imgView;
         private ImageView imgViewFav;
         private ConstraintLayout constraintLayoutContainer;
@@ -108,11 +105,11 @@ public class RecyclerViewAdapterFav extends RecyclerView.Adapter<RecyclerViewAda
             super(itemView);
 
             txtName = itemView.findViewById(R.id.txtName);
+            txtFavInfo = itemView.findViewById(R.id.textViewInfoFav);
             imgView = itemView.findViewById(R.id.imageView);
             imgViewFav = itemView.findViewById(R.id.imageViewFav);
 
             constraintLayoutContainer = itemView.findViewById(R.id.constraintLayout);
-
             constraintLayoutContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -139,5 +136,7 @@ public class RecyclerViewAdapterFav extends RecyclerView.Adapter<RecyclerViewAda
         notifyDataSetChanged();
 
     }
+
+
 
 }
