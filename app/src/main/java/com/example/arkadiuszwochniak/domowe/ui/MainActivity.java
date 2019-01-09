@@ -23,6 +23,7 @@ import com.example.arkadiuszwochniak.domowe.di.qualifier.ActivityContext;
 import com.example.arkadiuszwochniak.domowe.di.qualifier.ApplicationContext;
 import com.example.arkadiuszwochniak.domowe.objects.Photos;
 import com.example.arkadiuszwochniak.domowe.retrofit.APIInterface;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
             public void onResponse(Call<List<Photos>> call, Response<List<Photos>> response) {
                 populateRecyclerView(response.body());
+
             }
 
             @Override
@@ -101,10 +103,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
 
     @Override
-    public void launchIntent(String title, String url) {
+    public void launchIntent(String title, String thumbnailUrl, String url) {
 
         startActivity(new Intent(activityContext, DetailActivity.class).
                 putExtra("title", title).
+                putExtra("thumbnailUrl", thumbnailUrl).
                 putExtra("url", url));
     }
 

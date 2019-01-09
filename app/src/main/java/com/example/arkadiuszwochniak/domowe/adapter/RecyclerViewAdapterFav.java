@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.arkadiuszwochniak.domowe.R;
 import com.example.arkadiuszwochniak.domowe.di.module.DatabaseHelper;
@@ -61,17 +62,14 @@ public class RecyclerViewAdapterFav extends RecyclerView.Adapter<RecyclerViewAda
 
     @Override
     public void onBindViewHolder(final RecyclerViewAdapterFav.ViewHolder holder, final int position) {
-
-
-        final Integer pos = position;
-        final Integer photo;
         final String title = data.get(position).title;
-        final String url = data.get(position).thumbnailUrl;
+        final String url = data.get(position).url;
+        final String thumbnailUrl = data.get(position).thumbnailUrl;
 
         holder.txtName.setText(title);
-        Picasso.get().load(url).into(holder.imgView);
+        Picasso.get().load(thumbnailUrl).into(holder.imgView);
 
-        holder.imgViewFav.setImageResource(android.R.drawable.btn_star_big_on);
+        holder.imgViewFav.setImageResource(android.R.drawable.ic_delete);
 
 
         holder.imgViewFav.setOnClickListener(new View.OnClickListener() {
@@ -81,13 +79,11 @@ public class RecyclerViewAdapterFav extends RecyclerView.Adapter<RecyclerViewAda
 
                 Context context = v.getContext();
                 myDb = new DatabaseHelper(context);
-                Cursor res = myDb.getOneRow(title);
+                myDb.deleteOneRow(title);
+                data.remove(position);
+                notifyDataSetChanged();
+                Toast.makeText(v.getContext(), "Usunięto z ulubionych", Toast.LENGTH_SHORT).show();
 
-                if (res.getCount() == 0) {
-
-                } else {
-                    myDb.deleteOneRow(title);
-                }
             }
         });
 
@@ -123,6 +119,7 @@ public class RecyclerViewAdapterFav extends RecyclerView.Adapter<RecyclerViewAda
 
                     clickListener.launchIntent(
                             data.get(getAdapterPosition()).title,
+                            data.get(getAdapterPosition()).thumbnailUrl,
                             data.get(getAdapterPosition()).url);
 
                 }
@@ -132,7 +129,7 @@ public class RecyclerViewAdapterFav extends RecyclerView.Adapter<RecyclerViewAda
 
     public interface ClickListener {
 
-        void launchIntent(String title, String url);
+        void launchIntent(String title, String thumbnailUrl, String url);
 
     }
 

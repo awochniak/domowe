@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.arkadiuszwochniak.domowe.R;
 import com.example.arkadiuszwochniak.domowe.di.module.DatabaseHelper;
+import com.example.arkadiuszwochniak.domowe.di.module.ImageHelper;
 import com.example.arkadiuszwochniak.domowe.di.qualifier.ActivityContext;
 import com.example.arkadiuszwochniak.domowe.di.qualifier.ApplicationContext;
 import com.example.arkadiuszwochniak.domowe.objects.Photos;
@@ -42,7 +43,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private List<Photos> data;
     private RecyclerViewAdapter.ClickListener clickListener;
-    private Boolean flag = true;
     private DatabaseHelper myDb;
     private static final String IMAGE_RESOURCE = "image-resource";
 
@@ -73,15 +73,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-
-        final Integer pos = position;
         final Integer photo;
         final String title = data.get(position).title;
-        final String url = data.get(position).thumbnailUrl;
+        final String thumbnailUrl = data.get(position).thumbnailUrl;
+        final String url = data.get(position).url;
 
         holder.txtName.setText(title);
-        Picasso.get().load(url).into(holder.imgView);
-
+        Picasso.get().load(thumbnailUrl).into(holder.imgView);
         photo = checkFav(title,holder.imgViewFav.getContext());
         holder.imgViewFav.setImageResource(photo);
 
@@ -96,13 +94,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Cursor res = myDb.getOneRow(title);
 
                 if (res.getCount() == 0) {
-                    myDb.insertData(title, url, url);
+                    myDb.insertData(title, thumbnailUrl, url);
                     holder.imgViewFav.setImageResource(android.R.drawable.btn_star_big_on);
+                    Toast.makeText(v.getContext(), "Dodano do ulubionych", Toast.LENGTH_SHORT).show();
 
                     Picasso.get().load(url).into(new Target() {
                         @Override
                         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                            saveToInternalStorage(bitmap, v.getContext(), title);
+                            ImageHelper.saveToInternalStorage(bitmap, v.getContext(), title);
                         }
 
                         @Override
@@ -119,6 +118,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 } else {
                     myDb.deleteOneRow(title);
                     holder.imgViewFav.setImageResource(android.R.drawable.btn_star_big_off);
+                    Toast.makeText(v.getContext(), "Usunięto z ulubionych", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
@@ -155,6 +156,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                     clickListener.launchIntent(
                             data.get(getAdapterPosition()).title,
+                            data.get(getAdapterPosition()).thumbnailUrl,
                             data.get(getAdapterPosition()).url);
 
                 }
@@ -164,7 +166,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public interface ClickListener {
 
-        void launchIntent(String title, String url);
+        void launchIntent(String title, String thumbnailUrl, String url);
 
     }
 
@@ -190,28 +192,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     }
 
-    public String saveToInternalStorage(Bitmap bitmapImage, Context c, String fileName){
-
-        ContextWrapper cw = new ContextWrapper(c);
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        File mypath = new File(directory, fileName+".jpg");
-
-        FileOutputStream fos = null;
-
-        try {
-            fos = new FileOutputStream(mypath);
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return  directory.getAbsolutePath();
-    }
 
 }
 

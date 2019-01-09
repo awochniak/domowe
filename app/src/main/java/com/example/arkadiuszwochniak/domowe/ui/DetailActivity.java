@@ -2,6 +2,7 @@ package com.example.arkadiuszwochniak.domowe.ui;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.example.arkadiuszwochniak.domowe.di.component.ApplicationComponent;
 import com.example.arkadiuszwochniak.domowe.di.component.DaggerDetailActivityComponent;
 import com.example.arkadiuszwochniak.domowe.di.component.DetailActivityComponent;
 import com.example.arkadiuszwochniak.domowe.di.module.DatabaseHelper;
+import com.example.arkadiuszwochniak.domowe.di.module.ImageHelper;
 import com.example.arkadiuszwochniak.domowe.di.qualifier.ApplicationContext;
 import com.example.arkadiuszwochniak.domowe.objects.Photos;
 import com.example.arkadiuszwochniak.domowe.retrofit.APIInterface;
@@ -30,6 +32,8 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.example.arkadiuszwochniak.domowe.di.module.ImageHelper.checkPhotoExist;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -61,7 +65,8 @@ public class DetailActivity extends AppCompatActivity {
 
         final String title = getIntent().getStringExtra("title");
         final String url = getIntent().getStringExtra("url");
-        Picasso.get().load(url).fetch();
+        final String path;
+      //  Picasso.get().load(url).fetch();
 
         ApplicationComponent applicationComponent = MyApplication.get(this).getApplicationComponent();
         detailActivityComponent = DaggerDetailActivityComponent.builder()
@@ -70,19 +75,9 @@ public class DetailActivity extends AppCompatActivity {
 
         detailActivityComponent.inject(this);
 
-        apiInterface.getPeople("json").enqueue(new Callback<List<Photos>>() {
-            @Override
-            public void onResponse(Call<List<Photos>> call, Response<List<Photos>> response) {
-
+                path = checkPhotoExist(title, url, myDb,getBaseContext());
+                Picasso.get().load(path).into(imgView);
                 textView.setText(title);
-                Picasso.get().load(url).into(imgView);
-            }
-
-            @Override
-            public void onFailure(Call<List<Photos>> call, Throwable t) {
-
-            }
-        });
 
 
         buttonReturn.setOnClickListener(new View.OnClickListener() {

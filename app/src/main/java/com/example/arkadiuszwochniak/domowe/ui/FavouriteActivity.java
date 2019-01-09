@@ -41,7 +41,6 @@ import retrofit2.Response;
 public class FavouriteActivity extends AppCompatActivity implements RecyclerViewAdapterFav.ClickListener {
 
     Button button,delAll;
-    TextView textView;
     Cursor res;
     DatabaseHelper myDb;
     RecyclerView recyclerView;
@@ -80,35 +79,15 @@ public class FavouriteActivity extends AppCompatActivity implements RecyclerView
         favouriteActivityComponent.injectFavouriteActivity(this);
         recyclerView.setAdapter(recyclerViewAdapterFav);
 
+        res = myDb.getAllData();
 
-        apiInterface.getPeople("json").enqueue(new Callback<List<Photos>>() {
-            @Override
 
-            public void onResponse(Call<List<Photos>> call, Response<List<Photos>> response) {
-                populateRecyclerView(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<Photos>> call, Throwable t) {
-
-            }
-        });
-
-        Cursor res = myDb.getAllData();
-        if(res.getCount() == 0){
-            return;
-        }
-
-        StringBuffer buffer = new StringBuffer();
-
-        photogs = new ArrayList<Photos>();
+        photogs = new ArrayList<>();
         while(res.moveToNext()){
             Photos photo = new Photos(res.getString(1),res.getString(2),res.getString(3));
             photogs.add(photo);
         }
-
-    //textView = findViewById(R.id.textView3);
-//    textView.setText(buffer);
+        populateRecyclerView(photogs);
 
     delAll = findViewById(R.id.buttonDelAll);
 
@@ -116,9 +95,10 @@ public class FavouriteActivity extends AppCompatActivity implements RecyclerView
         @Override
         public void onClick(View v) {
         myDb.dropTable();
-        textView.setText("Nie masz ulubionych pozycji!");
-        Toast.makeText(getBaseContext(),"Usunięto wszystkie ulubione wpisy", Toast.LENGTH_LONG);
+        recyclerView.setVisibility(View.GONE);
+        Toast.makeText(getBaseContext(), "Usunięto wszystkie ulubione cytaty :(", Toast.LENGTH_LONG).show();
         }
+
     });
 
     button = findViewById(R.id.butto);
@@ -126,7 +106,7 @@ public class FavouriteActivity extends AppCompatActivity implements RecyclerView
     button.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            navigateUpTo(new Intent(getBaseContext(), MainActivity.class));
+            navigateUpTo(new Intent(v.getContext(), MainActivity.class));
         }
     });
     }
@@ -135,8 +115,11 @@ public class FavouriteActivity extends AppCompatActivity implements RecyclerView
         recyclerViewAdapterFav.setData(photogs);
     }
     @Override
-    public void launchIntent(String title, String url) {
-
+    public void launchIntent(String title, String thumbnailUrl, String url) {
+        startActivity(new Intent(activityContext, DetailActivity.class).
+                putExtra("title", title).
+                putExtra("thumbnailUrl", thumbnailUrl).
+                putExtra("url", url));
     }
 }
 
