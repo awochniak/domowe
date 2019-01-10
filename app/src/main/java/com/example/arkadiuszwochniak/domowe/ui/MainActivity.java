@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -37,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     private RecyclerView recyclerView;
     private Button btn;
+    private Integer progressValue;
+    private TextView textViewInfoMain;
+    private ProgressBar progressBar;
 
     MainActivityComponent mainActivityComponent;
 
@@ -60,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recyclerView);
+        textViewInfoMain = findViewById(R.id.textViewInfoMain);
+        progressBar = findViewById(R.id.progressBar);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
         ApplicationComponent applicationComponent = MyApplication.get(this).getApplicationComponent();
@@ -77,12 +85,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
             public void onResponse(Call<List<Photos>> call, Response<List<Photos>> response) {
                 populateRecyclerView(response.body());
+                textViewInfoMain.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
 
             }
 
             @Override
             public void onFailure(Call<List<Photos>> call, Throwable t) {
-
+                textViewInfoMain.setText("Brak połączenia! Sprawdź swoje połączenie z internetem");
             }
         });
 
